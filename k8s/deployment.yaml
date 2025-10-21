@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: idea-journal
+  labels:
+    app: idea-journal
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: idea-journal
+  template:
+    metadata:
+      labels:
+        app: idea-journal
+    spec:
+      containers:
+      - name: idea-journal
+        image: YOUR_DOCKERHUB_USERNAME/idea-journal:latest
+        ports:
+        - containerPort: 5000
+        env:
+        - name: DATABASE_URL
+          value: "sqlite:///ideas.db"
+        - name: SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: idea-journal-secret
+              key: secret_key
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 5000
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 5000
+          initialDelaySeconds: 15
+          periodSeconds: 20

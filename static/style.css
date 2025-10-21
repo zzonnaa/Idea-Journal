@@ -1,0 +1,5 @@
+body { font-family: Arial, sans-serif; background:#f9f9f9; color:#333 }
+.container { max-width:800px; margin:30px auto; background:#fff; padding:20px; border-radius:6px; box-shadow:0 2px 8px rgba(0,0,0,0.06) }
+header { display:flex; justify-content:space-between; align-items:center }
+.ideas li { margin-bottom:12px; padding-bottom:8px; border-bottom:1px solid #eee }
+.flashes li { list-style:none; padding:6px; margin-bottom:6px; background:#f1f1f1; border-radius:4px }

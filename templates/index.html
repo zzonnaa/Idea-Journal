@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+  <h2>All Ideas</h2>
+  {% if ideas %}
+    <ul class="ideas">
+      {% for i in ideas %}
+      <li>
+        <h3>{{ i.title }}</h3>
+        <p>{{ i.content or "" }}</p>
+        <small>Tags: {{ i.tags or "—" }}</small>
+        <form action="{{ url_for('delete', id=i.id) }}" method="post" style="display:inline">
+          <button type="submit">Delete</button>
+        </form>
+        <a href="{{ url_for('edit', id=i.id) }}">Edit</a>
+      </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No ideas yet.</p>
+  {% endif %}
+{% endblock %}

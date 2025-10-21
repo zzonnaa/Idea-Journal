@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+  <h2>{% if idea %}Edit Idea{% else %}Add Idea{% endif %}</h2>
+  <form method="post">
+    <label>Title</label><br/>
+    <input type="text" name="title" value="{{ idea.title if idea else '' }}" required><br/>
+    <label>Content</label><br/>
+    <textarea name="content">{{ idea.content if idea else '' }}</textarea><br/>
+    <label>Tags (comma separated)</label><br/>
+    <input name="tags" value="{{ idea.tags if idea else '' }}"><br/><br/>
+    <button type="submit">{% if idea %}Update{% else %}Add{% endif %}</button>
+  </form>
+{% endblock %}
