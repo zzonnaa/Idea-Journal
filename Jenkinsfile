@@ -29,21 +29,10 @@ pipeline {
 
         stage('Deploy/Update Kubernetes') {
             steps {
-                echo "Deploying or updating Kubernetes deployment..."
-
-                // Check if deployment exists
-                bat '''
-                kubectl get deployment journal-deployment
-                if %ERRORLEVEL% NEQ 0 (
-                    echo "Deployment does not exist, applying YAML..."
-                    kubectl apply -f k8s/deployment.yaml
-                    kubectl apply -f k8s/service.yaml
-                ) else (
-                    echo "Deployment exists, updating image..."
-                    kubectl set image deployment/journal-deployment journal-app=zzonnaa/journal-app:v1
-                    kubectl rollout status deployment/journal-deployment
-                )
-                '''
+                 echo "Deploying to Kubernetes..."
+                    // Apply the deployment & service (first-time or updates)
+                bat 'kubectl apply -f k8s/service.yaml'
+                bat 'kubectl set image deployment/journal-deployment journal-container=zzonnaa/journal-app:v1'
             }
         }
     }
