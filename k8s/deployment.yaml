@@ -6,11 +6,11 @@ spec:
   replicas: 2
   selector:
     matchLabels:
-      app: idea-journal
+      app: journal-app
   template:
     metadata:
       labels:
-        app: idea-journal
+        app: journal-app
     spec:
       containers:
         - name: journal-container
