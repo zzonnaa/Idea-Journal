@@ -35,5 +35,11 @@ pipeline {
                 bat 'kubectl set image deployment/journal-deployment journal-container=zzonnaa/journal-app:v1'
             }
         }
+        stage('Restart Deployment') {
+            steps {
+                echo "Restarting Deployment to pick up new image..."
+                bat "kubectl rollout restart deployment/journal-deployment"
+            }
+        }
     }
 }
