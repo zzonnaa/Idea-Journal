@@ -29,10 +29,9 @@ pipeline {
 
         stage('Deploy/Update Kubernetes') {
             steps {
-                 echo "Deploying to Kubernetes..."
-                    // Apply the deployment & service (first-time or updates)
+                echo "Deploying to Kubernetes..."
+                bat 'kubectl apply -f k8s/deployment.yaml --validate=false'
                 bat 'kubectl apply -f k8s/service.yaml'
-                bat 'kubectl set image deployment/journal-deployment journal-container=zzonnaa/journal-app:v1'
             }
         }
         stage('Restart Deployment') {
