@@ -9,7 +9,7 @@
   <div class="container">
     <header>
       <h1><a href="{{ url_for('index') }}">Idea Journal</a></h1>
-      <nav><a href="{{ url_for('add') }}">Add Idea</a></nav>
+      <nav><a href="{{ url_for('add') }}">Add an Idea</a></nav>
     </header>
     {% with messages = get_flashed_messages(with_categories=true) %}
       {% if messages %}
