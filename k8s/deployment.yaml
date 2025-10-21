@@ -1,9 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: idea-journal
-  labels:
-    app: idea-journal
+  name: journal-deployment
 spec:
   replicas: 2
   selector:
@@ -15,27 +13,7 @@ spec:
         app: idea-journal
     spec:
       containers:
-      - name: idea-journal
-        image: YOUR_DOCKERHUB_USERNAME/idea-journal:latest
-        ports:
-        - containerPort: 5000
-        env:
-        - name: DATABASE_URL
-          value: "sqlite:///ideas.db"
-        - name: SECRET_KEY
-          valueFrom:
-            secretKeyRef:
-              name: idea-journal-secret
-              key: secret_key
-        readinessProbe:
-          httpGet:
-            path: /
-            port: 5000
-          initialDelaySeconds: 5
-          periodSeconds: 10
-        livenessProbe:
-          httpGet:
-            path: /
-            port: 5000
-          initialDelaySeconds: 15
-          periodSeconds: 20
+        - name: journal-container
+          image: zzonnaa/journal-app:v1
+          ports:
+            - containerPort: 5000
