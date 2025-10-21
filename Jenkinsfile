@@ -22,25 +22,29 @@ pipeline {
         stage('Push Docker Image to Dockerhub') {
             steps {
                 echo "Pushing Docker image to Dockerhub..."
-                // Correct tag format: username/repo:tag
                 bat "docker tag journal-app:v1 zzonnaa/journal-app:v1"
                 bat "docker push zzonnaa/journal-app:v1"
             }
         }
 
-        stage('Deploy to Kubernetes') {
+        stage('Deploy/Update Kubernetes') {
             steps {
-                echo "Deploying to Kubernetes..."
-                bat 'kubectl apply -f k8s/deployment.yaml --validate=false'
-                bat 'kubectl apply -f k8s/service.yaml'
-            }
-        }
-        stage('Restart Deployment') {
-            steps {
-                echo "Restarting Deployment to pick up new image..."
-                bat "kubectl rollout restart deployment/journal-deployment"
-            }
-        }
+                echo "Deploying or updating Kubernetes deployment..."
 
+                // Check if deployment exists
+                bat '''
+                kubectl get deployment journal-deployment
+                if %ERRORLEVEL% NEQ 0 (
+                    echo "Deployment does not exist, applying YAML..."
+                    kubectl apply -f k8s/deployment.yaml
+                    kubectl apply -f k8s/service.yaml
+                ) else (
+                    echo "Deployment exists, updating image..."
+                    kubectl set image deployment/journal-deployment journal-app=zzonnaa/journal-app:v1
+                    kubectl rollout status deployment/journal-deployment
+                )
+                '''
+            }
+        }
     }
 }
